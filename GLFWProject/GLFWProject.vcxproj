@@ -146,9 +146,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
+    <ClCompile Include="Creature.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Gene.cpp" />
     <ClCompile Include="shaderClass.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
@@ -157,8 +160,12 @@
     <None Include="default.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Creature.h" />
+    <ClInclude Include="CreatureState.h" />
     <ClInclude Include="EBO.h" />
+    <ClInclude Include="Gene.h" />
     <ClInclude Include="shaderClass.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
   </ItemGroup>
