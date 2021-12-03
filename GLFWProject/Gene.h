@@ -13,28 +13,20 @@ public:
 
 	short data;
 
+	bool fromInputOrMedium;
+	uint8_t fromID;
+	bool toMediumOrOutput;
+	uint8_t toID;
+	int8_t value;
+
 	Gene();
 
-	Gene(short data);
-
-	bool fromInputOrMedium() {
-		return data & 0b1'000'0'000'00000000;
-	}
-
-	uint8_t fromID() {
-		return data & 0b0'111'0'000'00000000 >> 15;
-	}
-
-	bool toMediumOrOutput() {
-		return data & 0b0'000'1'000'00000000;
-	}
-
-	uint8_t toID() {
-		return data & 0b0'000'0'111'00000000 >> 11;
-	}
-
-	int8_t value() {
-		return data & 0b0'000'0'000'11111111;
+	Gene(short data) {
+		fromInputOrMedium = data & 0b1'000'0'000'00000000;
+		fromID = data & 0b0'111'0'000'00000000 >> 15;
+		toMediumOrOutput = data & 0b0'000'1'000'00000000;
+		toID = data & 0b0'000'0'111'00000000 >> 11;
+		value = data & 0b0'000'0'000'11111111;
 	}
 
 };

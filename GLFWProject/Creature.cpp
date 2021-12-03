@@ -15,7 +15,7 @@ void Creature::mutate(unsigned int bitAmount) {
 	uint8_t geneSize = simulation->geneSize;
 	size_t shortSize = sizeof(short);
 	for (int i = 0; i < bitAmount; i++) {
-		genes[rand() % geneSize].data ^= (1 << (rand() % shortSize));
+		genes[rand() % geneSize].data ^= (1 << (rand() % shortSize)); // re calculate? TODO
 	}
 	input[inputSize];
 	medium[mediumSize];
@@ -43,7 +43,7 @@ void Creature::tickGenes() {
 	input[1] = getSouthDist();
 	input[2] = getEastDist();
 	input[3] = getClock();
-	for (int i = 0; i < mediumSize; i++) {
+	for (int i = 0; i < mediumSize; i++) { // memset
 		medium[i] = 0;
 	}
 	for (int i = 0; i < outputSize; i++) {
@@ -51,10 +51,10 @@ void Creature::tickGenes() {
 	}
 	for (int i = 0; i < simulation->geneSize; i++) {
 		Gene gene = genes[i];
-		float* fromNodes = gene.fromInputOrMedium() ? input : medium;
-		const unsigned int fromIndex = gene.fromID() % gene.fromInputOrMedium() ? inputSize : mediumSize;
-		float* toNodes = gene.toMediumOrOutput() ? medium : output;
-		const unsigned int toIndex = gene.toID() % gene.toMediumOrOutput() ? mediumSize : outputSize;
-		fromNodes[fromIndex] += toNodes[toIndex] * gene.value();
+		float* fromNodes = gene.fromInputOrMedium ? input : medium;
+		const unsigned int fromIndex = gene.fromID % gene.fromInputOrMedium ? inputSize : mediumSize;
+		float* toNodes = gene.toMediumOrOutput ? medium : output;
+		const unsigned int toIndex = gene.toID % gene.toMediumOrOutput ? mediumSize : outputSize;
+		fromNodes[fromIndex] += toNodes[toIndex] * gene.value;
 	}
 }
