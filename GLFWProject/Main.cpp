@@ -10,7 +10,7 @@
 
 GLfloat vertices[] =
 { //               COORDINATES                  /     COLORS
-	 0.0f,                                 1.0f,     0.9f, 0.1f, 0.1f,		// Lower left corner
+	 0.0f,  0.0f,                          1.0f,     0.9f, 0.1f, 0.1f,		// Lower left corner
 	 0.5f, -0.8f * float(sqrt(3)) * 1 / 3, 0.0f,     0.1f, 0.9f, 0.1f,		// Lower right corner
 	 0.1f,	0.5f * float(sqrt(3)) * 2 / 3, 0.0f,     0.1f, 0.1f, 0.9f,		// Upper corner
 	-0.25f,	0.8f * float(sqrt(3)) * 1 / 6, 0.0f,     0.1f, 0.9f, 0.1f,		// Inner left

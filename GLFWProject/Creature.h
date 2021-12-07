@@ -11,8 +11,9 @@ public:
 
 	Simulation* simulation;
 	Gene* genes;
-	unsigned int x;
-	unsigned int y;
+	static const unsigned int defaultLegLength = 20;
+	static const unsigned int defaultLegLengthSqrd = defaultLegLength * defaultLegLength;
+	unsigned int* corners; // 3 points
 	unsigned int fitness;
 
 	// Nodes
@@ -20,9 +21,11 @@ public:
 	float* medium;
 	float* output;
 
-	const unsigned int inputSize = 4;
-	const unsigned int mediumSize = 3;
-	const unsigned int outputSize = 6; // 3 legs; 2 directions
+	static const unsigned int inputSize = 4;
+	static const unsigned int mediumSize = 3;
+	static const unsigned int outputSize = 6; // 3 legs; 2 directions
+
+	static const int TRUNCATION_FACTOR = 256;
 
 	Creature(Simulation* simulation);
 
@@ -36,6 +39,7 @@ public:
 	}
 
 	void mutate(unsigned int bitAmount);
+	void reactivateGenes();
 
 	unsigned int getFitness() {
 		return fitness;
@@ -51,14 +55,19 @@ public:
 	unsigned int getEastDist();
 	unsigned int getClock();
 
-	// output "motions"
-	
-	void flexLeg(int leg, bool direction) {
-
-	}
-
-	// go through each gene and make a movement
 	void tickGenes();
+
+	// output "motions"
+	void updateCorners();
+
+protected:
+	float distanceFromDefaultLegLength(double dist);
+	float lengthNormalizer(float legLength);
+
+private:
+	int8_t inputActivation;
+	int8_t mediumActivation;
+	int8_t outputActivation;
 
 };
 

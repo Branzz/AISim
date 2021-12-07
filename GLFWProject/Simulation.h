@@ -22,6 +22,7 @@ public:
 	// [generation][creatures]*
 	Creature*** generationCreatures;
 	const unsigned int mutationIntensity;
+	bool* geneActivationBuffer; // not thread safe
 
 	Simulation(const uint8_t geneSize,
 		const unsigned int creatureAmount,
@@ -47,6 +48,7 @@ public:
 			}
 			delete[] generationCreatures[i];
 		}
+		delete[] geneActivationBuffer;
 		delete& generationFrames;
 	}
 

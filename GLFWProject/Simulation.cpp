@@ -21,6 +21,7 @@ Simulation::Simulation(const uint8_t geneSize0,
 	mutationIntensity(mutationIntensity0) {
 
 	generationCreatures[generationSize];
+	geneActivationBuffer[Creature::mediumSize];
 
 	runFirstGen();
 
