@@ -8,6 +8,8 @@
 #include "VBO.h"
 #include "EBO.h"
 
+#include "Simulation.h"
+
 GLfloat vertices[] =
 { //               COORDINATES                  /     COLORS
 	 0.0f,  0.0f,                          1.0f,     0.9f, 0.1f, 0.1f,		// Lower left corner
@@ -23,24 +25,25 @@ GLuint indices[] = {
 	5, 4, 1
 };
 
+unsigned int fitnessCalculator(Creature* creature) {
+	return creature->getEastDist();
+}
+
 int main() {
 
-	srand(time(0));
+	init();
 
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	const unsigned int WIDTH = 500, HEIGHT = 500;
 
-	GLFWwindow* window = glfwCreateWindow(400, 400, "Test", NULL, NULL);
-	if (window == NULL) {
-		std::cout << "Could not create window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
-	gladLoadGL();
-	glViewport(0, 0, 400, 400);
+	GLFWwindow* window = createWindow(WIDTH, HEIGHT);
+
+	if (window == NULL)
+		return EXIT_FAILURE;
+
+	Simulation* simulation = new Simulation(5, 10, 50, WIDTH, HEIGHT, 10, 50, 2, *fitnessCalculator);
+	simulation->run();
+
+	// TODO convert creature float pos's to openGL vertices
 
 	Shader shaderProgram("default.vert", "default.frag");
 
@@ -50,8 +53,8 @@ int main() {
 	VBO VBO1(vertices, sizeof(vertices));
 	EBO EBO1(indices, sizeof(indices));
 
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*) 0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*) (3 * sizeof(float)));
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
@@ -78,4 +81,26 @@ int main() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
+}
+
+void init() {
+	srand((unsigned int)time(0));
+
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+}
+
+GLFWwindow* createWindow(const unsigned int width, const unsigned int height) {
+	GLFWwindow* window = glfwCreateWindow(width, height, "Triangle Neural Sim", NULL, NULL);
+	if (window == NULL) {
+		std::cout << "Could not create window" << std::endl;
+		glfwTerminate();
+		return NULL;
+	}
+	glfwMakeContextCurrent(window);
+	gladLoadGL();
+	glViewport(0, 0, width, height);
+	return window;
 }

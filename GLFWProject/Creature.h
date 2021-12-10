@@ -1,8 +1,7 @@
-#include <stdlib.h>
-#include <stdint.h>
-
 #ifndef CREATURE_H
 #define CREATURE_H
+#include <stdlib.h>
+#include <stdint.h>
 #include "Simulation.h"
 #include "Gene.h"
 
@@ -31,12 +30,23 @@ public:
 
 	Creature(Simulation* simulation, Gene* genes);
 
+	Creature(Creature& creature) :
+		simulation(creature.simulation),
+		genes(creature.genes),
+		input(creature.input),
+		medium(creature.medium),
+		output(creature.output),
+		corners(creature.corners),
+		fitness(creature.fitness) { }
+
 	~Creature() {
 		delete[] genes;
 		delete[] input;
 		delete[] medium;
 		delete[] output;
 	}
+
+	void spawn();
 
 	void mutate(unsigned int bitAmount);
 	void reactivateGenes();

@@ -1,8 +1,7 @@
-#include <stdint.h>
-
-
 #ifndef GENE_H
 #define GENE_H
+
+#include <stdint.h>
 
 class Gene {
 public:

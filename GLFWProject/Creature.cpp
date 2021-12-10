@@ -13,6 +13,22 @@ Creature::Creature(Simulation* simulation0, Gene* genes0)
 	input[inputSize];
 	medium[mediumSize];
 	output[outputSize];
+
+	spawn();
+	mutate(simulation->mutationIntensity);
+}
+
+static const double thetaShift = 6.28318530717958647692 / RAND_MAX;
+
+void Creature::spawn() {
+	unsigned int centerX = defaultLegLength + (rand() % (simulation->width - 2 * defaultLegLength));
+	unsigned int centerY = defaultLegLength + (rand() % (simulation->height - 2 * defaultLegLength));
+	for (int i = 0; i < 3; i++) {
+		double theta = rand() * thetaShift;
+		double radius = rand() % defaultLegLength;
+		corners[i * 2] = centerX + radius * cos(theta);
+		corners[i * 2 + 1] = centerY + radius * sin(theta);
+	}
 }
 
 void Creature::mutate(unsigned int bitAmount) {
@@ -101,8 +117,8 @@ void Creature::tickGenes() {
 				+= medium[gene.fromID % mediumSize] * gene.value;
 		}
 	}
-	for (int i = 0; i < mediumSize; i++) {
-		if (mediumActivation & (1 << i))
+	for (int i = 0; i < outputSize; i++) {
+		if (outputActivation & (1 << i))
 			output[i] = tanh(output[i] / TRUNCATION_FACTOR);
 	}
 }
